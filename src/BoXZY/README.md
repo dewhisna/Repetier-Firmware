@@ -1,7 +1,7 @@
 
 # [BoXZY Rapid-Change FabLab: Mill, Laser Engraver, 3D Printer](http://www.boxzy.com/)
 
-Based on comparison, the "official" BoXZY firmware source code appears to have derived from repetier/Repetier-Firmware@28aad2de1c626401eae26ab5ded23de4e3fdec9b. 
+Based on comparison, the "official" BoXZY firmware source code appears to have derived from [repetier/Repetier-Firmware@28aad2de1c626401eae26ab5ded23de4e3fdec9b](https://github.com/repetier/Repetier-Firmware/commit/28aad2de1c626401eae26ab5ded23de4e3fdec9b). 
 However, I can find no publically available repository for the BoXZY customizations.  I only found this [BoXZY Firmware Snapshot](http://boxzy.dozuki.com/Guide/Files/33) posted in their Troubleshooting Resources, which has been imported here.
 
 The primary customizations appear to be centered around the BoXZY specific configuration settings and add-on enhancements to support the Etching Laser control.
