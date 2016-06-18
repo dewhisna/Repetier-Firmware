@@ -1,12 +1,37 @@
+/.project
+*.pro.user*
+CMakeLists.txt.user*
+
+.make.cache
+.qmake.cache
+.qmake.vars
+
+*~
+*.a
+*.la
+*.lib
+*.moc
 *.o
-*.d
-Private/**
+*.obj
+*.orig
+*.temp
+*.so
+*.core
 .DS_Store
+.svn
+*.qm
+*.d
+
+# Build targets:
+/**/build-*/
+
+# Original Repetier entries:
+
+Private/**
 
 *.db
 Private/*
 
-*.hex
 src/ArduinoAVR/Repetier/bin/*
 src/ArduinoAVR/Repetier/bin/Release/Repetier_mega2560_.elf
 
