@@ -9,5 +9,5 @@ The primary customizations appear to be centered around the BoXZY specific confi
 This [fork](https://github.com/dewhisna/Repetier-Firmware) and "BoXZY" branch have been setup to both track additional BoXZY firmware releases from Team BoXZY (as they make them available) and to compare against the main Repetier Firmware so that future enhancements can be easily diff'd and merged.
 If an official BoXZY repo is discovered with the Team BoXZY changes (let me know if you find one), it can be imported into this branch.  But, as far as I know, they didn't use a version control system, or at least not a public facing one.
 
-Another branch, called "BoXZY-update", will be created from this "BoXZY" branch and used to merge changes from the Repetier "master" as I find to be useful for my BoXZY hardware.
+Another branch, called "BoXZY_Custom", will be created from this "BoXZY" branch and used to merge changes from the Repetier "master" as I find to be useful for my BoXZY hardware.
 
