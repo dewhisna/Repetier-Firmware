@@ -16,9 +16,11 @@ PROJECT(${this_target} C CXX ASM)
 
 set(SOURCE_FILES
 	"${this_target}.ino"
+	"BedLeveling.cpp"
 	"BoXZYLaser.cpp"
 	"Commands.cpp"
 	"Communication.cpp"
+	"Drivers.cpp"
 	"Eeprom.cpp"
 	"Extruder.cpp"
 	"gcode.cpp"
@@ -28,6 +30,7 @@ set(SOURCE_FILES
 	"SDCard.cpp"
 	"SdFat.cpp"
 	"ui.cpp"
+	"uilang.cpp"
 )
 
 set(HEADER_FILES
@@ -35,12 +38,17 @@ set(HEADER_FILES
 	"Commands.h"
 	"Communication.h"
 	"Configuration.h"
+	"Drivers.h"
 	"Eeprom.h"
+	"Events.h"
 	"Extruder.h"
 	"fastio.h"
 	"FatStructs.h"
+	"gameduino2.h"
 	"gcode.h"
+	"gd2_ext.h"
 	"HAL.h"
+	"logo.h"
 	"motion.h"
 	"pins.h"
 	"Printer.h"

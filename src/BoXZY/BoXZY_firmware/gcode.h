@@ -21,29 +21,49 @@
 #include "BoXZYLaser.h"
 
 #define MAX_CMD_SIZE 96
+#define ARRAY_SIZE(_x)	(sizeof(_x)/sizeof(_x[0]))
+
+enum FirmwareState {NotBusy=0,Processing,Paused,WaitHeater};
+
 class SDCard;
 class GCode   // 52 uint8_ts per command needed
 {
-    unsigned int params;
-    unsigned int params2;
+    uint16_t params;
+    uint16_t params2;
 public:
-    unsigned int N; // Line number
-    unsigned int M;
-    unsigned int G;
+    uint16_t N; // Line number
+    uint16_t M;
+    uint16_t G;
     float X;
     float Y;
     float Z;
     float E;
     float F;
-    uint8_t T;
-    long S;
-    long P;
+    int32_t S;
+    int32_t P;
     float I;
     float J;
     float R;
+    float D;
+    float C;
+    float H;
+    float A;
+    float B;
+    float K;
+    float L;
+    float O;
+
+    char *text; //text[17];
+    //moved the byte to the end and aligned ints on short boundary
+    // Old habit from PC, which require alignments for data types such as int and long to be on 2 or 4 byte boundary
+    // Otherwise, the compiler adds padding, wasted space.
+    uint8_t T; // This may not matter on any of these controllers, but it can't hurt
+    // True if origin did not come from serial console. That way we can send status messages to
+    // a host only if he would normally not know about the mode switch.
+    bool internalCommand;
+
     uint32_t L_index; // Next BoXZYLBuffer index to use
     uint32_t L_end_index; // BoXZYLBuffer index after last index to use
-    char *text; //text[17];
 
     inline bool hasM()
     {
@@ -113,11 +133,37 @@ public:
     {
         return ((params2 & 4)!=0);
     }
+    inline bool hasD()
+    {
+        return ((params2 & 8)!=0);
+    }
+    inline bool hasC()
+    {
+        return ((params2 & 16)!=0);
+    }
+    inline bool hasH()
+    {
+        return ((params2 & 32)!=0);
+    }
+    inline bool hasA()
+    {
+        return ((params2 & 64)!=0);
+    }
+    inline bool hasB()
+    {
+        return ((params2 & 128)!=0);
+    }
+    inline bool hasK()
+    {
+        return ((params2 & 256)!=0);
+    }
     inline bool hasL()
     {
-        // Using 8192 to try to avoid collisions with whatever
-        // params2 flags get created in main codebase next.
-        return ((params2 & 8192)!=0);
+        return ((params2 & 512)!=0);
+    }
+    inline bool hasO()
+    {
+        return ((params2 & 1024)!=0);
     }
     inline long getS(long def)
     {
@@ -146,7 +192,14 @@ public:
     static void pushCommand();
     static void executeFString(FSTRINGPARAM(cmd));
     static uint8_t computeBinarySize(char *ptr);
-
+	static void fatalError(FSTRINGPARAM(message));
+	static void reportFatalError();
+	static void resetFatalError();
+	inline static bool hasFatalError() {
+		return fatalErrorMsg != NULL;
+	}
+	static void keepAlive(enum FirmwareState state);
+	static uint32_t keepAliveInterval;
     friend class SDCard;
     friend class UIDisplay;
 private:
@@ -156,21 +209,24 @@ private:
     inline float parseFloatValue(char *s)
     {
         char *endPtr;
+        while(*s == 32) s++; // skip spaces
         float f = (strtod(s, &endPtr));
-        if(s == endPtr) setFormatError();
+        if(s == endPtr) f=0.0; // treat empty string "x " as "x0"
         return f;
     }
     inline float parseFloatValue(char **s)
     {
         char *endPtr;
+        while(**s == 32) (*s)++; // skip spaces
         float f = (strtod(*s, &endPtr));
-        if(*s == endPtr) setFormatError();
+        if(*s == endPtr) f=0.0; // treat empty string "x " as "x0"
         *s = endPtr;
         return f;
     }
     inline long parseLongValue(char *s)
     {
         char *endPtr;
+        while(*s == 32) s++; // skip spaces
         long l = (strtol(s, &endPtr, 10));
         if(s == endPtr) setFormatError();
         return l;
@@ -178,13 +234,15 @@ private:
     inline long parseLongValue(char **s)
     {
         char *endPtr;
+        while(**s == 32) (*s)++; // skip spaces
         long l = (strtol(*s, &endPtr, 10));
         if(*s == endPtr) setFormatError();
+        if(*s == endPtr) l=0; // treat empty string argument "p " as "p0"
         *s = endPtr;
         return l;
     }
 
-
+	static FSTRINGPARAM(fatalErrorMsg);
     static GCode commandsBuffered[GCODE_BUFFER_SIZE]; ///< Buffer for received commands.
     static uint8_t bufferReadIndex; ///< Read position in gcode_buffer.
     static uint8_t bufferWriteIndex; ///< Write position in gcode_buffer.
@@ -201,8 +259,29 @@ private:
     static volatile uint8_t bufferLength; ///< Number of commands stored in gcode_buffer
     static millis_t timeOfLastDataPacket; ///< Time, when we got the last data packet. Used to detect missing uint8_ts.
     static uint8_t formatErrors; ///< Number of sequential format errors
+	static millis_t lastBusySignal; ///< When was the last busy signal
 };
 
+#if JSON_OUTPUT
+#include "SdFat.h"
+// Struct to hold Gcode file information 32 bytes
+#define GENBY_SIZE 16
+class GCodeFileInfo {
+public:
+    void init(SdBaseFile &file);
+
+    unsigned long fileSize;
+    float objectHeight;
+    float layerHeight;
+    float filamentNeeded;
+    char generatedBy[GENBY_SIZE];
+
+    bool findGeneratedBy(char *buf, char *genBy);
+    bool findLayerHeight(char *buf, float &layerHeight);
+    bool findFilamentNeed(char *buf, float &filament);
+    bool findTotalHeight(char *buf, float &objectHeight);
+};
+#endif
 
 #endif
 
