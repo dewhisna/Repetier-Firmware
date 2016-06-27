@@ -35,6 +35,7 @@ set(SOURCE_FILES
 
 set(HEADER_FILES
 	"BoXZYLaser.h"
+	"BoXZY_logo.h"
 	"Commands.h"
 	"Communication.h"
 	"Configuration.h"
