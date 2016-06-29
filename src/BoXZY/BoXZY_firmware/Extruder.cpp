@@ -364,78 +364,7 @@ void Extruder::manageTemperatures()
                 act->startHoldDecouple(time);
                 float raising = 3.333 * (act->currentTemperatureC - act->tempArray[act->tempPointer]); // raising dT/dt, 3.33 = reciproke of time interval (300 ms)
                 act->tempIState = 0.25 * (3.0 * act->tempIState + raising); // damp raising
-//                output = (act->currentTemperatureC + act->tempIState * act->deadTime > act->targetTemperatureC ? 0 : act->pidDriveMax);
-
-                static uint8_t prev_fan_pwm = 0;
-                uint8_t fan_pwm = pwm_pos[PWM_FAN1];
-
-                if (fan_pwm != prev_fan_pwm)
-                {
-                    // Fan is on, adjust the averaged derivative down
-                    // so that the output will come on soon unless we're
-                    // already overshooting.
-                    //
-                    int delta_pwm = (int)fan_pwm - (int)prev_fan_pwm;
-                    float delta_dT_dt = -(act->pidIGain * delta_pwm); 
-                    OUT_P_F_LN("fan compensation delta_dT_dt: ", delta_dT_dt);
-                    act->tempIState += delta_dT_dt;
-                }
-
-                prev_fan_pwm = fan_pwm;
-
-                if (act->currentTemperatureC + act->tempIState * act->pidPGain
-                        < act->targetTemperatureC)
-                {
-                    // Compensate for fan cooling by increasing the output power
-                    // if the fan is on.
-                    //
-                    // TODO: piecewise linear interpolation for more accurate curve
-                    // if / when time is found to characterize the BoXZY head.
-                    //
-                    // TODO: Compensate for extruder material flow too, since more
-                    // plastic being heated causes more cooling. This will also
-                    // require characterization.
-                    //
-                    // TODO: Build an autotuner that will measure the extruder
-                    // temperature response w.r.t. fan and extruder speeds.
-                    //
-                    // TODO: Add in proportional control to handle large errors
-                    // faster, especially at startup.
-                    //
-                    // TODO: Add in a time factor that allows for the time it takes
-                    // the nozzle to come up to block temperature. This additional
-                    // time lag between the thermistor reaching target and the
-                    // nozzle's actual temerature reaching target is one reason
-                    // we removed the high-power boost. Rising more slowly causes
-                    // the nozzle to be much closer to target when the thermistor
-                    // reaches the target. The other was not wanting to add more
-                    // values to the EEPROM.
-                    //
-                    // TODO: Store the BOXY_* constants below in EEPROM.
-                    //
-                    uint8_t fan_pwm = pwm_pos[PWM_FAN1];
-
-                    if (fan_pwm < BOXZY_FAN_HEATER_NO_COMPENSATION_MAX_COUNTS)
-                    {
-                        output = act->pidDriveMin;
-                    }
-                    else if (fan_pwm < BOXZY_FAN_HEATER_COMPENSATION_MAX_COUNTS)
-                    {
-                        // Div-by-0 is prevented because both of the prior comparisons
-                        // use the same relational operator, so if the constants
-                        // are equal, this branch won't be reached.
-                        output = (uint8_t)(
-                            (uint16_t)(fan_pwm - BOXZY_FAN_HEATER_NO_COMPENSATION_MAX_COUNTS)
-                            * (act->pidDriveMax - act->pidDriveMin)
-                            / (BOXZY_FAN_HEATER_COMPENSATION_MAX_COUNTS
-                                - BOXZY_FAN_HEATER_NO_COMPENSATION_MAX_COUNTS))
-                            + act->pidDriveMin;
-                    }
-                    else
-                    {
-                        output = act->pidDriveMax;
-                    }
-                }
+                output = (act->currentTemperatureC + act->tempIState * act->deadTime > act->targetTemperatureC ? 0 : act->pidDriveMax);
             }
             else // bang bang and slow bang bang
 #endif // TEMP_PID
