@@ -172,7 +172,7 @@ float Printer::maxRealSegmentLength = 0;
 #ifdef DEBUG_REAL_JERK
 float Printer::maxRealJerk = 0;
 #endif
-BoXZY_head_t Printer::BoXZY_head;
+BoXZY_head_t Printer::BoXZY_head = BoXZY_CnC_head;
 #ifdef DEBUG_PRINT
 int debugWaitLoop = 0;
 #endif

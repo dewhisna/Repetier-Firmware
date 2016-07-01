@@ -45,8 +45,8 @@ const uint8 osAnalogInputChannels[] PROGMEM = ANALOG_INPUT_CHANNELS;
 volatile uint osAnalogInputValues[ANALOG_INPUTS];
 #endif
 
-static BoXZY_head_t new_BoXZY_head;
-millis_t new_head_last_change_ms;
+static BoXZY_head_t new_BoXZY_head = BoXZY_CnC_head;
+millis_t new_head_last_change_ms = 0;
 
 #ifdef USE_GENERIC_THERMISTORTABLE_1
 short temptable_generic1[GENERIC_THERM_NUM_ENTRIES][2];
