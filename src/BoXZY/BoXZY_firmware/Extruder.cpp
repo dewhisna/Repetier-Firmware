@@ -137,7 +137,7 @@ void Extruder::manageTemperatures()
                     // to remove the extruder head, fix the thermistor
                     // or a cabling issue and resume printing.
                     extruderTempErrors = 0;
-                    Printer::flag0 &= PRINTER_FLAG0_TEMPSENSOR_DEFECT;
+                    Printer::unsetAnyTempsensorDefect();
 
                     switch (Printer::BoXZY_head)
                     {
