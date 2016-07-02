@@ -181,7 +181,7 @@
 #define RETRACTION_LENGTH 3
 #define RETRACTION_LONG_LENGTH 13
 #define RETRACTION_SPEED 40
-#define RETRACTION_Z_LIFT 0
+#define RETRACTION_Z_LIFT 0.2
 #define RETRACTION_UNDO_EXTRA_LENGTH 0
 #define RETRACTION_UNDO_EXTRA_LONG_LENGTH 0
 #define RETRACTION_UNDO_SPEED 20
@@ -991,7 +991,7 @@ Values must be in range 1..255
     "retractionLength": 3,
     "retractionLongLength": 13,
     "retractionSpeed": 40,
-    "retractionZLift": 0,
+    "retractionZLift": 0.2,
     "retractionUndoExtraLength": 0,
     "retractionUndoExtraLongLength": 0,
     "retractionUndoSpeed": 20,

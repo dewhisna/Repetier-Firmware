@@ -387,7 +387,7 @@
     "retractionLength": 3,
     "retractionLongLength": 13,
     "retractionSpeed": 40,
-    "retractionZLift": 0,
+    "retractionZLift": 0.2,
     "retractionUndoExtraLength": 0,
     "retractionUndoExtraLongLength": 0,
     "retractionUndoSpeed": 20,
