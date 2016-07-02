@@ -912,8 +912,13 @@ void Extruder::setTemperatureForExtruder(float temperatureInCelsius, uint8_t ext
             }
 #endif
             if((waituntil == 0 &&
+#if defined(SKIP_M109_IF_WITHIN) && (SKIP_M109_IF_WITHIN > 0)
+                    (dirRising ? actExtruder->tempControl.currentTemperatureC >= actExtruder->tempControl.targetTemperatureC - SKIP_M109_IF_WITHIN
+                     : actExtruder->tempControl.currentTemperatureC <= actExtruder->tempControl.targetTemperatureC + SKIP_M109_IF_WITHIN))
+#else
                     (dirRising ? actExtruder->tempControl.currentTemperatureC >= actExtruder->tempControl.targetTemperatureC - 1
                      : actExtruder->tempControl.currentTemperatureC <= actExtruder->tempControl.targetTemperatureC + 1))
+#endif
 #if defined(TEMP_HYSTERESIS) && TEMP_HYSTERESIS>=1
                     || (waituntil != 0 && (abs(actExtruder->tempControl.currentTemperatureC - actExtruder->tempControl.targetTemperatureC)) > TEMP_HYSTERESIS)
 #endif

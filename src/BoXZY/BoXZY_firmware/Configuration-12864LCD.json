@@ -291,7 +291,7 @@
     },
     "tempHysteresis": 0,
     "pidControlRange": 60,
-    "skipM109Within": 2,
+    "skipM109Within": 4,
     "extruderFanCoolTemp": 50,
     "minTemp": 0,
     "maxTemp": 275,

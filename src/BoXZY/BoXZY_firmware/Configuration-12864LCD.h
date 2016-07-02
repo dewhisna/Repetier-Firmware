@@ -200,7 +200,7 @@
 
 #define RETRACT_DURING_HEATUP true
 #define PID_CONTROL_RANGE 60
-#define SKIP_M109_IF_WITHIN 2
+#define SKIP_M109_IF_WITHIN 4
 #define SCALE_PID_TO_MAX 0
 #define TEMP_HYSTERESIS 0
 #define EXTRUDE_MAXLENGTH 160
@@ -897,7 +897,7 @@ Values must be in range 1..255
     },
     "tempHysteresis": 0,
     "pidControlRange": 60,
-    "skipM109Within": 2,
+    "skipM109Within": 4,
     "extruderFanCoolTemp": 50,
     "minTemp": 0,
     "maxTemp": 275,
