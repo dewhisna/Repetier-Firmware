@@ -29,40 +29,40 @@
 BoXZYLBuffer_t BoXZYLBuffer;
 uint8_t BoXZYLBuffer_t::elts[BOXZY_LASER_MAX_L_ELTS];
 
-static bool is_laser_on_flag;
-static bool is_fan_on_flag;
+static bool is_laser_on_flag = false;		// True if laser power >0 is requested
+static bool is_system_on_flag = false;		// True if both the Fan and the Laser power supply is turned 'on'
 
-static void shut_fan_off(void)
+static void shut_laser_system_off(void)
 {
-    is_fan_on_flag = false;
-    analogWrite(EXT0_HEATER_PIN, 0);
+    is_system_on_flag = false;
+    analogWrite(EXT0_HEATER_PIN, 0);		// Heater pin in now both fan and laser power supply.  Turn off completely.
     WRITE(EXT0_HEATER_PIN,HEATER_PINS_INVERTED);
 }
 
-static void turn_fan_on(void)
+static void turn_laser_system_on(void)
 {
-    is_fan_on_flag = true;
-    analogWrite(EXT0_HEATER_PIN, 128);
+    is_system_on_flag = true;
+    analogWrite(EXT0_HEATER_PIN, 255);		// Heater pin in now both fan and laser power supply.  Turn on completely.  Fan voltage will be set with voltage regulator in print head.
 }
 
 void manage_laser(void)
 {
-    if (is_fan_on_flag
+    if (is_system_on_flag
         && !is_laser_on_flag
         && BoXZYLBuffer.is_empty())
     {
-        shut_fan_off();
+        shut_laser_system_off();
     }
 }
 
 void set_laser(uint8_t power)
 {
-    is_laser_on_flag = (power > 0.0);
+    is_laser_on_flag = (power > 0);
 
     if (is_laser_on_flag)
     {
-        turn_fan_on();
-    }
+        turn_laser_system_on();
+    }   // Note: Don't turn system off here if setting power to 0 so that raster etching won't cause system to start/stop everytime a 0 power level is encountered
 
     analogWrite(FAN_PIN, power);
 }
@@ -70,7 +70,7 @@ void set_laser(uint8_t power)
 void disable_laser(void)
 {
     set_laser(0);
-    shut_fan_off();
+    shut_laser_system_off();
 }
 
 

@@ -37,7 +37,7 @@ static inline uint8_t laser_pct_to_power(float pct)
 {
     return pct >= 100.0 ? 255U
         :  pct <=   0.0 ?   0U
-        :                 (uint8_t)(pct*2.55);
+        :                 static_cast<uint8_t>(pct*2.55);
 }
 
 void manage_laser(void);
