@@ -102,7 +102,7 @@
 //  0 = Stock/Standard Laser Head
 //  1 = VDL (Visible Diode Lasers) 2.1A Constant Current Driver Circuit
 //
-#define BOXZY_LASER_DRIVER_TYPE 0
+#define BOXZY_LASER_DRIVER_TYPE 1
 
 
 // ################ END MANUAL SETTINGS ##########################
@@ -534,12 +534,12 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define AXISCOMP_TANXZ 0
 
 #ifndef SDSUPPORT  // Some boards have sd support on board. These define the values already in pins.h
-#define SDSUPPORT 0
+#define SDSUPPORT 1
 #undef SDCARDDETECT
 #define SDCARDDETECT -1
 #define SDCARDDETECTINVERTED 0
 #endif
-#define SD_EXTENDED_DIR 1 /** Show extended directory including file length. Don't use this with Pronterface! */
+#define SD_EXTENDED_DIR 0 /** Show extended directory including file length. Don't use this with Pronterface! */
 #define SD_RUN_ON_STOP ""
 #define SD_STOP_HEATER_AND_MOTORS_ON_STOP 1
 #define ARC_SUPPORT 1
@@ -547,7 +547,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_CHECKSUM_FORCED 0
 #define FEATURE_FAN_CONTROL 1
 #define FEATURE_FAN2_CONTROL 0
-#define FEATURE_CONTROLLER 0
+#define FEATURE_CONTROLLER 11
 #define ADC_KEYPAD_PIN -1
 #define LANGUAGE_EN_ACTIVE 1
 #define LANGUAGE_DE_ACTIVE 1
@@ -578,7 +578,7 @@ WARNING: Servos can draw a considerable amount of current. Make sure your system
 #define FEATURE_BEEPER 0
 #define CASE_LIGHTS_PIN -1
 #define CASE_LIGHT_DEFAULT_ON 1
-#define UI_START_SCREEN_DELAY 1000
+#define UI_START_SCREEN_DELAY 5000
 #define UI_DYNAMIC_ENCODER_SPEED 1
         /**
 Beeper sound definitions for short beeps during key actions
@@ -597,10 +597,12 @@ Values must be in range 1..255
 #define UI_SET_MIN_EXTRUDER_TEMP   170
 #define UI_SET_MAX_EXTRUDER_TEMP   260
 #define UI_SET_EXTRUDER_FEEDRATE 2
-#define UI_SET_EXTRUDER_RETRACT_DISTANCE 3
+#define UI_SET_EXTRUDER_RETRACT_DISTANCE 4
 
 
 #define NUM_MOTOR_DRIVERS 0
+
+#include "BoXZY_logo.h"
 
 #endif
 
@@ -817,7 +819,7 @@ Values must be in range 1..255
     "enableZProbing": "0",
     "extrudeMaxLength": 160,
     "homeOrder": "HOME_ORDER_XYZ",
-    "featureController": 0,
+    "featureController": 11,
     "uiPrinterName": "BoXZY",
     "uiPrinterCompany": "KinetiGear, LLC",
     "uiPagesDuration": 4000,
@@ -841,7 +843,7 @@ Values must be in range 1..255
     "uiMinEtxruderTemp": 170,
     "uiMaxExtruderTemp": 260,
     "uiExtruderFeedrate": 2,
-    "uiExtruderRetractDistance": 3,
+    "uiExtruderRetractDistance": 4,
     "uiSpeeddependentPositioning": "0",
     "maxBedTemperature": 120,
     "bedSensorType": 1,
@@ -909,7 +911,7 @@ Values must be in range 1..255
     "arcSupport": "1",
     "featureMemoryPositionWatchdog": "1",
     "forceChecksum": "0",
-    "sdExtendedDir": "1",
+    "sdExtendedDir": "0",
     "featureFanControl": "1",
     "fanPin": "ORIG_FAN_PIN",
     "featureFan2Control": "0",
@@ -943,10 +945,10 @@ Values must be in range 1..255
     "zProbeY3": 160,
     "zProbeSwitchingDistance": 1,
     "zProbeRepetitions": 1,
-    "sdSupport": "0",
+    "sdSupport": "1",
     "sdCardDetectPin": -1,
     "sdCardDetectInverted": "0",
-    "uiStartScreenDelay": 1000,
+    "uiStartScreenDelay": 5000,
     "xEndstopBackMove": 5,
     "yEndstopBackMove": 5,
     "zEndstopBackMove": 2,
@@ -1090,7 +1092,7 @@ Values must be in range 1..255
             "enablePin": -1
         }
     ],
-    "manualConfig": "",
+    "manualConfig": "#include \"BoXZY_logo.h\"",
     "zHomeMinTemperature": 0,
     "zHomeXPos": 999999,
     "zHomeYPos": 999999,

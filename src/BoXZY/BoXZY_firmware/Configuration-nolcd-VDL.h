@@ -102,7 +102,7 @@
 //  0 = Stock/Standard Laser Head
 //  1 = VDL (Visible Diode Lasers) 2.1A Constant Current Driver Circuit
 //
-#define BOXZY_LASER_DRIVER_TYPE 0
+#define BOXZY_LASER_DRIVER_TYPE 1
 
 
 // ################ END MANUAL SETTINGS ##########################

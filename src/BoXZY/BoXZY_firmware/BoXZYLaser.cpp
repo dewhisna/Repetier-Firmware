@@ -41,8 +41,13 @@ static void shut_laser_system_off(void)
 
 static void turn_laser_system_on(void)
 {
+#if defined(BOXZY_LASER_DRIVER_TYPE) && (BOXZY_LASER_DRIVER_TYPE == 0)		// Stock Laser Configuration
     is_system_on_flag = true;
-    analogWrite(EXT0_HEATER_PIN, 255);		// Heater pin in now both fan and laser power supply.  Turn on completely.  Fan voltage will be set with voltage regulator in print head.
+	analogWrite(EXT0_HEATER_PIN, 128);		// Heater pin on stock configuration is the fan-only.  Set to 1/2 power to drop 19V down to required fan voltage
+#elif defined(BOXZY_LASER_DRIVER_TYPE) && (BOXZY_LASER_DRIVER_TYPE == 1)	// VDL Laser Configuration
+	is_system_on_flag = true;
+    analogWrite(EXT0_HEATER_PIN, 255);		// Heater pin on VDL circuit is both fan and laser power supply.  Turn on completely.  Fan voltage will be set with voltage regulator in print head.
+#endif
 }
 
 void manage_laser(void)
@@ -64,7 +69,11 @@ void set_laser(uint8_t power)
         turn_laser_system_on();
     }   // Note: Don't turn system off here if setting power to 0 so that raster etching won't cause system to start/stop everytime a 0 power level is encountered
 
-    analogWrite(FAN_PIN, power);
+    if (is_system_on_flag) {
+        analogWrite(FAN_PIN, power);
+    } else {
+        analogWrite(FAN_PIN, 0);	// Safeguard in case no laser driver type is defined -- don't turn on laser without fan, etc.
+    }
 }
 
 void disable_laser(void)
