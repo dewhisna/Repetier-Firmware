@@ -1003,8 +1003,6 @@ bool GCode::parseAscii(char *line,bool fromSerial)
                 params |= 4096; // Needs V2 for saving (TODO: implement saving scanline)
 
                 do {
-                    ++pos;
-
                     while (BoXZYLBuffer.is_full())
                     {
                         // Wait for IRQs to make some room
@@ -1028,6 +1026,7 @@ bool GCode::parseAscii(char *line,bool fromSerial)
                     if (!hasFormatError())
                         pos = strchr(pos,'L');
 
+                    if (pos != 0) ++pos;
                 } while (!hasFormatError() && (pos != 0));
             }
  	        break;
