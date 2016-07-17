@@ -98,12 +98,6 @@
 // 
 #define BOXZY_FAN_HEATER_COMPENSATION_MAX_COUNTS 255
 
-// Select BoXZY Laser Configuration:
-//  0 = Stock/Standard Laser Head
-//  1 = VDL (Visible Diode Lasers) 2.1A Constant Current Driver Circuit
-//
-#define BOXZY_LASER_DRIVER_TYPE 0
-
 
 // ################ END MANUAL SETTINGS ##########################
 
